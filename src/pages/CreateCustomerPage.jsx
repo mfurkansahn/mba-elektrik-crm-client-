@@ -1,0 +1,175 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
+import "./CreateCustomerPage.css";
+
+function CreateCustomerPage() {
+  const [formData, setFormData] = useState({
+    fullNameOrCompanyName: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "Ankara",
+    district: "",
+    customerType: "Bireysel",
+    description: "",
+  });
+
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((previousFormData) => ({
+      ...previousFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      await api.post("/api/Customers", formData);
+      navigate("/customers");
+    } catch (error) {
+      console.error("Müşteri oluşturulamadı:", error);
+
+      setError(
+        error.response?.data?.detail ||
+          error.response?.data?.title ||
+          "Müşteri kaydedilirken bir hata oluştu.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <main className="create-customer-page">
+      <div className="create-customer-header">
+        <div>
+          <h1>Yeni Müşteri Ekle</h1>
+          <p>Müşteri bilgilerini girerek yeni bir kayıt oluşturun.</p>
+        </div>
+
+        <Link to="/customers">Müşteri Listesine Dön</Link>
+      </div>
+
+      <form className="customer-form" onSubmit={handleSubmit}>
+        {error && (
+          <div className="form-error form-group-full" role="alert">
+            {error}
+          </div>
+        )}
+        <div className="form-group">
+          <label htmlFor="fullNameOrCompanyName">Ad Soyad / Firma Adı</label>
+          <input
+            id="fullNameOrCompanyName"
+            name="fullNameOrCompanyName"
+            type="text"
+            value={formData.fullNameOrCompanyName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="phone">Telefon</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="email">E-posta</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="customerType">Müşteri Türü</label>
+          <select
+            id="customerType"
+            name="customerType"
+            value={formData.customerType}
+            onChange={handleChange}
+            required
+          >
+            <option value="Bireysel">Bireysel</option>
+            <option value="Kurumsal">Kurumsal</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="city">Şehir</label>
+          <input
+            id="city"
+            name="city"
+            type="text"
+            value={formData.city}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="district">İlçe</label>
+          <input
+            id="district"
+            name="district"
+            type="text"
+            value={formData.district}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group form-group-full">
+          <label htmlFor="address">Adres</label>
+          <textarea
+            id="address"
+            name="address"
+            rows="3"
+            value={formData.address}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group form-group-full">
+          <label htmlFor="description">Açıklama</label>
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            value={formData.description}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-actions form-group-full">
+          <Link to="/customers">İptal</Link>
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Kaydediliyor..." : "Müşteriyi Kaydet"}
+          </button>
+        </div>
+      </form>
+    </main>
+  );
+}
+
+export default CreateCustomerPage;
