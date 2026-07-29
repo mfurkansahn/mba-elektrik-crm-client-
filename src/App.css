@@ -2,26 +2,114 @@
   min-height: 100vh;
 }
 
-main {
+.login-page {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 24px;
-  box-sizing: border-box;
-  text-align: center;
   background-color: #f4f7fb;
 }
 
-main h1 {
-  margin: 0 0 12px;
-  color: #1e3a5f;
-  font-size: 42px;
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(30, 58, 95, 0.12);
 }
 
-main p {
+.login-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.login-header h1 {
+  margin: 0 0 10px;
+  color: #1e3a5f;
+  font-size: 32px;
+}
+
+.login-header p {
   margin: 0;
   color: #64748b;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  color: #1f2937;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.login-form button {
+  padding: 13px 18px;
+  color: #ffffff;
+  background-color: #1e3a5f;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-form button:hover {
+  background-color: #152a45;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 30px 22px;
+  }
+
+  .login-header h1 {
+    font-size: 27px;
+  }
+}
+
+.login-error {
+  margin: -6px 0 0;
+  padding: 10px 12px;
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
