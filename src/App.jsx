@@ -6,6 +6,8 @@ import CreateCustomerPage from "./pages/CreateCustomerPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/DashboardLayout";
 import EditCustomerPage from "./pages/EditCustomerPage";
+import ServiceRequestsPage from "./pages/ServiceRequestsPage";
+import CreateServiceRequestPage from "./pages/CreateServiceRequestPage";
 import "./App.css";
 
 function App() {
@@ -25,6 +27,11 @@ function App() {
         <Route path="/customers" element={<CustomersPage />} />
         <Route path="/customers/new" element={<CreateCustomerPage />} />
         <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
+        <Route path="/service-requests" element={<ServiceRequestsPage />} />
+        <Route
+          path="/service-requests/new"
+          element={<CreateServiceRequestPage />}
+        />
       </Route>
     </Routes>
   );

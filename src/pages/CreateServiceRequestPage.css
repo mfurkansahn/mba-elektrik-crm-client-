@@ -1,0 +1,149 @@
+.create-service-request-page {
+  padding: 32px;
+}
+
+.create-service-request-header {
+  margin-bottom: 24px;
+}
+
+.create-service-request-header h1 {
+  margin: 0 0 8px;
+  color: #102a43;
+  font-size: 32px;
+}
+
+.create-service-request-header p {
+  margin: 0;
+  color: #627d98;
+}
+
+.service-request-form {
+  max-width: 900px;
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(16, 42, 67, 0.08);
+}
+
+.service-request-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.service-request-form-group label {
+  color: #243b53;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.service-request-form-group input,
+.service-request-form-group select,
+.service-request-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  color: #243b53;
+  background-color: #ffffff;
+  border: 1px solid #bcccdc;
+  border-radius: 8px;
+  font: inherit;
+  outline: none;
+}
+
+.service-request-form-group textarea {
+  resize: vertical;
+}
+
+.service-request-form-group input:focus,
+.service-request-form-group select:focus,
+.service-request-form-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.service-request-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.service-request-form-error {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  color: #b91c1c;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+}
+
+.service-request-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cancel-service-request-button,
+.submit-service-request-button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancel-service-request-button {
+  color: #334e68;
+  background-color: #e6edf4;
+}
+
+.cancel-service-request-button:hover {
+  background-color: #d9e2ec;
+}
+
+.submit-service-request-button {
+  color: #102a43;
+  background-color: #f59e0b;
+}
+
+.submit-service-request-button:hover {
+  background-color: #d97706;
+}
+
+.cancel-service-request-button:disabled,
+.submit-service-request-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 768px) {
+  .create-service-request-page {
+    padding: 20px;
+  }
+
+  .create-service-request-header h1 {
+    font-size: 26px;
+  }
+
+  .service-request-form {
+    padding: 18px;
+  }
+
+  .service-request-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .service-request-form-actions {
+    flex-direction: column;
+  }
+
+  .cancel-service-request-button,
+  .submit-service-request-button {
+    width: 100%;
+  }
+}
