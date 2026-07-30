@@ -91,43 +91,75 @@ function DashboardPage() {
         >
           <h2>Toplam Hizmet Talebi</h2>
           <strong>{summary.totalServiceRequests}</strong>
-          <span>Hizmet taleplerini görüntüle</span>
+          <span>Tüm hizmet taleplerini görüntüle</span>
         </Link>
 
-        <div className="summary-card new-requests-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent("Yeni Talep")}`}
+          className="summary-card summary-card-link new-requests-card"
+        >
           <h2>Yeni Talepler</h2>
           <strong>{summary.newRequests}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card waiting-documents-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent("Evrak Bekleniyor")}`}
+          className="summary-card summary-card-link waiting-documents-card"
+        >
           <h2>Evrak Bekleyenler</h2>
           <strong>{summary.waitingDocuments}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card preparing-applications-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent(
+            "Başvuru Hazırlanıyor",
+          )}`}
+          className="summary-card summary-card-link preparing-applications-card"
+        >
           <h2>Başvurusu Hazırlananlar</h2>
           <strong>{summary.preparingApplications}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card enerjisa-applications-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent(
+            "Enerjisa Başvurusu Yapıldı",
+          )}`}
+          className="summary-card summary-card-link enerjisa-applications-card"
+        >
           <h2>Enerjisa Başvuruları</h2>
           <strong>{summary.enerjisaApplications}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card waiting-control-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent("Kontrol Bekleniyor")}`}
+          className="summary-card summary-card-link waiting-control-card"
+        >
           <h2>Kontrol Bekleyenler</h2>
           <strong>{summary.waitingControl}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card completed-requests-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent("Tamamlandı")}`}
+          className="summary-card summary-card-link completed-requests-card"
+        >
           <h2>Tamamlanan Talepler</h2>
           <strong>{summary.completedRequests}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
 
-        <div className="summary-card cancelled-requests-card">
+        <Link
+          to={`/service-requests?status=${encodeURIComponent("İptal Edildi")}`}
+          className="summary-card summary-card-link cancelled-requests-card"
+        >
           <h2>İptal Edilen Talepler</h2>
           <strong>{summary.cancelledRequests}</strong>
-        </div>
+          <span>Talepleri görüntüle</span>
+        </Link>
       </section>
 
       <section className="reminders-section">

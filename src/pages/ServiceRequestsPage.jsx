@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import "./ServiceRequestsPage.css";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function ServiceRequestsPage() {
+  const [searchParams] = useSearchParams();
+  const selectedStatus = searchParams.get("status") || "";
   const [serviceRequestsData, setServiceRequestsData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -15,6 +17,7 @@ function ServiceRequestsPage() {
           params: {
             pageNumber: 1,
             pageSize: 10,
+            status: selectedStatus || undefined,
           },
         });
 
@@ -28,7 +31,7 @@ function ServiceRequestsPage() {
     };
 
     fetchServiceRequests();
-  }, []);
+  }, [selectedStatus]);
 
   if (loading) {
     return <p>Servis talepleri yükleniyor...</p>;
@@ -42,8 +45,13 @@ function ServiceRequestsPage() {
     <main className="service-requests-page">
       <div className="service-requests-header">
         <div>
-          <h1>Servis Talepleri</h1>
-          <p>Kayıtlı servis taleplerinin listesi</p>
+          <h1>{selectedStatus || "Servis Talepleri"}</h1>
+
+          <p>
+            {selectedStatus
+              ? `"${selectedStatus}" durumundaki hizmet talepleri`
+              : "Kayıtlı servis taleplerinin listesi"}
+          </p>
         </div>
 
         <Link to="/service-requests/new" className="add-service-request-button">
@@ -51,7 +59,11 @@ function ServiceRequestsPage() {
         </Link>
       </div>
       {serviceRequestsData.items.length === 0 ? (
-        <p>Henüz kayıtlı hizmet talebi bulunmuyor.</p>
+        <p>
+          {selectedStatus
+            ? `"${selectedStatus}" durumunda hizmet talebi bulunmuyor.`
+            : "Henüz kayıtlı hizmet talebi bulunmuyor."}
+        </p>
       ) : (
         <div className="service-requests-table-wrapper">
           <table className="service-requests-table">
