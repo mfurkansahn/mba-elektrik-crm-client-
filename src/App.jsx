@@ -8,6 +8,7 @@ import DashboardLayout from "./components/DashboardLayout";
 import EditCustomerPage from "./pages/EditCustomerPage";
 import ServiceRequestsPage from "./pages/ServiceRequestsPage";
 import CreateServiceRequestPage from "./pages/CreateServiceRequestPage";
+import PassiveCustomersPage from "./pages/PassiveCustomersPage";
 import "./App.css";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/customers" element={<CustomersPage />} />
         <Route path="/customers/new" element={<CreateCustomerPage />} />
+        <Route path="/customers/passive" element={<PassiveCustomersPage />} />
         <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
         <Route path="/service-requests" element={<ServiceRequestsPage />} />
         <Route
