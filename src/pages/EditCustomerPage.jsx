@@ -3,6 +3,29 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 import "./CreateCustomerPage.css";
 
+const formatTurkishPhone = (value) => {
+  let digits = value.replace(/\D/g, "");
+
+  if (digits.startsWith("90") && digits.length > 10) {
+    digits = digits.slice(2);
+  }
+
+  if (digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+
+  digits = digits.slice(0, 10);
+
+  return [
+    digits.slice(0, 3),
+    digits.slice(3, 6),
+    digits.slice(6, 8),
+    digits.slice(8, 10),
+  ]
+    .filter(Boolean)
+    .join(" ");
+};
+
 function EditCustomerPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,7 +52,7 @@ function EditCustomerPage() {
 
         setFormData({
           fullNameOrCompanyName: customer.fullNameOrCompanyName || "",
-          phone: customer.phone || "",
+          phone: formatTurkishPhone(customer.phone || ""),
           email: customer.email || "",
           address: customer.address || "",
           city: customer.city || "",
@@ -62,11 +85,25 @@ function EditCustomerPage() {
     }));
   };
 
+  const handlePhoneChange = (event) => {
+    const formattedPhone = formatTurkishPhone(event.target.value);
+
+    setFormData((previousFormData) => ({
+      ...previousFormData,
+      phone: formattedPhone,
+    }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      await api.put(`/api/Customers/${id}`, formData);
+      const customerData = {
+        ...formData,
+        phone: `+90 ${formData.phone}`,
+      };
+
+      await api.put(`/api/Customers/${id}`, customerData);
       navigate("/customers");
     } catch (error) {
       console.error("Müşteri güncellenirken hata oluştu:", error);
@@ -110,14 +147,35 @@ function EditCustomerPage() {
 
         <div className="form-group">
           <label htmlFor="phone">Telefon</label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
+
+          <div className="phone-input-group">
+            <select
+              className="country-code-select"
+              aria-label="Ülke telefon kodu"
+              defaultValue="+90"
+            >
+              <option value="+90">🇹🇷 +90</option>
+            </select>
+
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel"
+              placeholder="532 123 45 67"
+              value={formData.phone}
+              onChange={handlePhoneChange}
+              maxLength={13}
+              pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
+              title="Telefon numarasını 532 123 45 67 biçiminde girin."
+              required
+            />
+          </div>
+
+          <small className="form-help-text">
+            Numaranın başındaki 0 olmadan girin.
+          </small>
         </div>
 
         <div className="form-group">
