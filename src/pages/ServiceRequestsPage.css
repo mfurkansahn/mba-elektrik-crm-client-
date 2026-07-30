@@ -92,3 +92,14 @@
     text-align: center;
   }
 }
+
+.service-request-title-link {
+  color: #102a43;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.service-request-title-link:hover {
+  color: #f59e0b;
+  text-decoration: underline;
+}

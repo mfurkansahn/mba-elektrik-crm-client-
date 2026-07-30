@@ -82,7 +82,14 @@ function ServiceRequestsPage() {
               {serviceRequestsData.items.map((serviceRequest) => (
                 <tr key={serviceRequest.id}>
                   <td>{serviceRequest.customerName}</td>
-                  <td>{serviceRequest.title}</td>
+                  <td>
+                    <Link
+                      to={`/service-requests/${serviceRequest.id}`}
+                      className="service-request-title-link"
+                    >
+                      {serviceRequest.title}
+                    </Link>
+                  </td>
                   <td>{serviceRequest.serviceType}</td>
                   <td>{serviceRequest.status}</td>
                   <td>
