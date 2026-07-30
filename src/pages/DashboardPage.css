@@ -120,6 +120,76 @@
   border-left-color: #dc2626;
 }
 
+/* Hatırlatma bölümü */
+
+.reminders-section {
+  margin-top: 36px;
+}
+
+.reminders-section > h2 {
+  margin: 0 0 20px;
+  color: #102a43;
+  font-size: 24px;
+}
+
+.reminders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.reminder-summary-card {
+  padding: 22px;
+  background-color: #ffffff;
+  border: 1px solid #d9e2ec;
+  border-left: 5px solid #2563eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(16, 42, 67, 0.08);
+  box-sizing: border-box;
+}
+
+.reminder-summary-card h3 {
+  margin: 0 0 14px;
+  color: #334e68;
+  font-size: 17px;
+}
+
+.reminder-summary-card strong {
+  display: block;
+  color: #102a43;
+  font-size: 32px;
+}
+
+.overdue-reminders-card {
+  border-left-color: #dc2626;
+}
+
+.today-reminders-card {
+  border-left-color: #f59e0b;
+}
+
+.upcoming-reminders-card {
+  border-left-color: #8b5cf6;
+}
+
+.reminders-empty {
+  margin: 20px 0 0;
+  padding: 16px 18px;
+  color: #166534;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+}
+
+.reminders-error {
+  margin: 0;
+  padding: 16px 18px;
+  color: #991b1b;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+}
+
 @media (max-width: 600px) {
   .dashboard-page {
     padding: 20px;
@@ -144,5 +214,26 @@
 
   .summary-card strong {
     font-size: 32px;
+  }
+
+  .reminders-section {
+    margin-top: 28px;
+  }
+
+  .reminders-section > h2 {
+    font-size: 22px;
+  }
+
+  .reminders-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reminder-summary-card {
+    padding: 20px;
+  }
+
+  .reminder-summary-card strong {
+    font-size: 30px;
   }
 }

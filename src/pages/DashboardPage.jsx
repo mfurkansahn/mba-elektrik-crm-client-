@@ -8,6 +8,10 @@ function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [reminders, setReminders] = useState(null);
+  const [remindersLoading, setRemindersLoading] = useState(true);
+  const [remindersError, setRemindersError] = useState("");
+
   useEffect(() => {
     const fetchSummary = async () => {
       try {
@@ -24,6 +28,24 @@ function DashboardPage() {
     };
 
     fetchSummary();
+  }, []);
+
+  useEffect(() => {
+    const fetchReminders = async () => {
+      try {
+        const response = await api.get("/api/Dashboard/reminders");
+
+        setReminders(response.data);
+        console.log("Dashboard hatırlatma verileri:", response.data);
+      } catch (error) {
+        console.error("Hatırlatma verileri alınamadı:", error);
+        setRemindersError("Hatırlatma bilgileri alınırken bir hata oluştu.");
+      } finally {
+        setRemindersLoading(false);
+      }
+    };
+
+    fetchReminders();
   }, []);
 
   if (loading) {
@@ -106,6 +128,46 @@ function DashboardPage() {
           <h2>İptal Edilen Talepler</h2>
           <strong>{summary.cancelledRequests}</strong>
         </div>
+      </section>
+
+      <section className="reminders-section">
+        <h2>Hatırlatmalar</h2>
+
+        {remindersLoading ? (
+          <p>Hatırlatmalar yükleniyor...</p>
+        ) : remindersError ? (
+          <p className="reminders-error">{remindersError}</p>
+        ) : (
+          <>
+            <div className="reminders-grid">
+              <div className="reminder-summary-card">
+                <h3>Tamamlanmamış</h3>
+                <strong>{reminders.totalIncompleteReminders}</strong>
+              </div>
+
+              <div className="reminder-summary-card overdue-reminders-card">
+                <h3>Gecikmiş</h3>
+                <strong>{reminders.overdueCount}</strong>
+              </div>
+
+              <div className="reminder-summary-card today-reminders-card">
+                <h3>Bugün</h3>
+                <strong>{reminders.todayCount}</strong>
+              </div>
+
+              <div className="reminder-summary-card upcoming-reminders-card">
+                <h3>Yaklaşan</h3>
+                <strong>{reminders.upcomingCount}</strong>
+              </div>
+            </div>
+
+            {reminders.totalIncompleteReminders === 0 && (
+              <p className="reminders-empty">
+                Şu anda bekleyen bir hatırlatma bulunmuyor.
+              </p>
+            )}
+          </>
+        )}
       </section>
     </main>
   );
