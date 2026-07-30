@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 import "./CreateCustomerPage.css";
 
 function EditCustomerPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     fullNameOrCompanyName: "",
@@ -61,9 +62,15 @@ function EditCustomerPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Güncellenecek müşteri:", formData);
+
+    try {
+      await api.put(`/api/Customers/${id}`, formData);
+      navigate("/customers");
+    } catch (error) {
+      console.error("Müşteri güncellenirken hata oluştu:", error);
+    }
   };
 
   if (loading) {
@@ -185,7 +192,9 @@ function EditCustomerPage() {
 
         <div className="form-actions form-group-full">
           <Link to="/customers">İptal</Link>
-          <button type="submit">Değişiklikleri Kaydet</button>
+          <button type="submit" className="primary-button">
+            Değişiklikleri Kaydet
+          </button>
         </div>
       </form>
     </main>
