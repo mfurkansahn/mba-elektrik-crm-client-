@@ -3,6 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import api from "../services/api";
 import "./ServiceRequestDetailPage.css";
 
+const formatUtcDateTime = (dateValue) => {
+  if (!dateValue) {
+    return "";
+  }
+
+  const hasTimeZone = /(?:Z|[+-]\d{2}:\d{2})$/i.test(dateValue);
+  const normalizedValue = hasTimeZone ? dateValue : `${dateValue}Z`;
+
+  return new Date(normalizedValue).toLocaleString("tr-TR", {
+    timeZone: "Europe/Istanbul",
+  });
+};
+
 function ServiceRequestDetailPage() {
   const { id } = useParams();
 
@@ -388,7 +401,7 @@ function ServiceRequestDetailPage() {
               <article key={note.id} className="service-request-list-item">
                 <p>{note.noteText}</p>
 
-                <time>{new Date(note.createdAt).toLocaleString("tr-TR")}</time>
+                <time>{formatUtcDateTime(note.createdAt)}</time>
 
                 <button
                   type="button"
@@ -476,15 +489,11 @@ function ServiceRequestDetailPage() {
 
                 <p>{document.description || "Açıklama girilmemiş."}</p>
 
-                <time>
-                  Eklenme:{" "}
-                  {new Date(document.createdAt).toLocaleString("tr-TR")}
-                </time>
+                <time>Eklenme: {formatUtcDateTime(document.createdAt)}</time>
 
                 {document.deliveredDate && (
                   <time dateTime={document.deliveredDate}>
-                    Teslim Tarihi:{" "}
-                    {new Date(document.deliveredDate).toLocaleString("tr-TR")}
+                    Teslim Tarihi: {formatUtcDateTime(document.deliveredDate)}
                   </time>
                 )}
 
@@ -584,8 +593,7 @@ function ServiceRequestDetailPage() {
 
                 {reminder.completedDate && (
                   <time dateTime={reminder.completedDate}>
-                    Tamamlanma:{" "}
-                    {new Date(reminder.completedDate).toLocaleString("tr-TR")}
+                    Tamamlanma: {formatUtcDateTime(reminder.completedDate)}
                   </time>
                 )}
 
