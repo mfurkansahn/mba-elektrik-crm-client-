@@ -584,3 +584,240 @@
   cursor: not-allowed;
   opacity: 0.65;
 }
+
+.document-file-info {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  color: #1e3a5f;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+.document-file-actions {
+  display: grid;
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.document-file-actions input[type="file"] {
+  width: 100%;
+  min-width: 0;
+  padding: 7px;
+  color: #475569;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+}
+
+.document-file-actions input[type="file"]::file-selector-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  color: #334155;
+  font-weight: 600;
+  background-color: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.document-file-actions input[type="file"]::file-selector-button:hover {
+  color: #1d4ed8;
+  background-color: #dbeafe;
+}
+
+.document-download-button,
+.document-upload-button {
+  min-height: 42px;
+  padding: 10px 16px;
+  color: #ffffff;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.document-download-button {
+  background-color: #0f766e;
+}
+
+.document-download-button:hover:not(:disabled) {
+  background-color: #115e59;
+  transform: translateY(-1px);
+}
+
+.document-upload-button {
+  background-color: #2563eb;
+}
+
+.document-upload-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.document-download-button:disabled,
+.document-upload-button:disabled {
+  color: #64748b;
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .document-file-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .document-download-button,
+  .document-upload-button {
+    width: 100%;
+  }
+}
+
+.note-edit-container {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.note-edit-container label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.note-edit-textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  color: #1e293b;
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.note-edit-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.note-edit-textarea:disabled {
+  color: #64748b;
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.note-item-actions,
+.note-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.note-edit-button,
+.note-save-button,
+.note-cancel-button,
+.note-delete-button {
+  min-height: 40px;
+  padding: 9px 15px;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.note-edit-button {
+  background-color: #2563eb;
+}
+
+.note-edit-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.note-save-button {
+  background-color: #15803d;
+}
+
+.note-save-button:hover:not(:disabled) {
+  background-color: #166534;
+  transform: translateY(-1px);
+}
+
+.note-cancel-button {
+  color: #334155;
+  background-color: #e2e8f0;
+}
+
+.note-cancel-button:hover:not(:disabled) {
+  background-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.note-delete-button {
+  background-color: #dc2626;
+}
+
+.note-delete-button:hover:not(:disabled) {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.note-edit-button:disabled,
+.note-save-button:disabled,
+.note-cancel-button:disabled,
+.note-delete-button:disabled {
+  color: #64748b;
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
+@media (max-width: 600px) {
+  .note-item-actions,
+  .note-edit-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .note-edit-button,
+  .note-save-button,
+  .note-cancel-button,
+  .note-delete-button {
+    width: 100%;
+  }
+}

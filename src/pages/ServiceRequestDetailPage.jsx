@@ -30,6 +30,11 @@ function ServiceRequestDetailPage() {
   const [deletingNoteId, setDeletingNoteId] = useState(null);
   const [noteActionError, setNoteActionError] = useState("");
 
+  const [editingNoteId, setEditingNoteId] = useState(null);
+  const [editingNoteText, setEditingNoteText] = useState("");
+  const [savingNoteId, setSavingNoteId] = useState(null);
+  const [noteEditError, setNoteEditError] = useState("");
+
   const [documentName, setDocumentName] = useState("");
   const [documentDescription, setDocumentDescription] = useState("");
   const [documentSubmitting, setDocumentSubmitting] = useState(false);
@@ -37,6 +42,11 @@ function ServiceRequestDetailPage() {
 
   const [updatingDocumentId, setUpdatingDocumentId] = useState(null);
   const [documentActionError, setDocumentActionError] = useState("");
+  const [downloadingDocumentId, setDownloadingDocumentId] = useState(null);
+
+  const [selectedDocumentFiles, setSelectedDocumentFiles] = useState({});
+  const [uploadingDocumentId, setUploadingDocumentId] = useState(null);
+  const [documentFileError, setDocumentFileError] = useState("");
 
   const [reminderText, setReminderText] = useState("");
   const [reminderDate, setReminderDate] = useState("");
@@ -49,6 +59,9 @@ function ServiceRequestDetailPage() {
   useEffect(() => {
     const fetchServiceRequest = async () => {
       try {
+        setLoading(true);
+        setError("");
+
         const response = await api.get(`/api/ServiceRequests/${id}`);
         setServiceRequest(response.data);
 
@@ -219,22 +232,15 @@ function ServiceRequestDetailPage() {
       setUpdatingDocumentId(document.id);
       setDocumentActionError("");
 
-      const response = await api.patch(
+      await api.patch(
         `/api/ServiceRequests/${id}/documents/${document.id}/delivery`,
         {
           isDelivered: !document.isDelivered,
         },
       );
 
-      setServiceRequest((currentServiceRequest) => ({
-        ...currentServiceRequest,
-        documents: (currentServiceRequest.documents || []).map(
-          (currentDocument) =>
-            currentDocument.id === document.id
-              ? response.data
-              : currentDocument,
-        ),
-      }));
+      const detailResponse = await api.get(`/api/ServiceRequests/${id}`);
+      setServiceRequest(detailResponse.data);
     } catch (error) {
       console.error("Evrak teslim durumu güncellenemedi:", error);
 
@@ -245,6 +251,87 @@ function ServiceRequestDetailPage() {
       );
     } finally {
       setUpdatingDocumentId(null);
+    }
+  };
+
+  const handleUploadDocumentFile = async (documentId) => {
+    const selectedFile = selectedDocumentFiles[documentId];
+
+    if (!selectedFile) {
+      setDocumentFileError("Lütfen yüklenecek dosyayı seçin.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      setUploadingDocumentId(documentId);
+      setDocumentFileError("");
+
+      await api.post(
+        `/api/ServiceRequests/${id}/documents/${documentId}/file`,
+        formData,
+      );
+
+      const response = await api.get(`/api/ServiceRequests/${id}`);
+      setServiceRequest(response.data);
+
+      setSelectedDocumentFiles((previousFiles) => {
+        const updatedFiles = { ...previousFiles };
+        delete updatedFiles[documentId];
+        return updatedFiles;
+      });
+    } catch (error) {
+      setDocumentFileError(
+        error.response?.data?.detail ||
+          error.response?.data?.title ||
+          "Dosya yüklenirken bir hata oluştu.",
+      );
+    } finally {
+      setUploadingDocumentId(null);
+    }
+  };
+
+  const handleDownloadDocumentFile = async (documentItem) => {
+    if (!documentItem.hasFile) {
+      setDocumentFileError("Bu evraka yüklenmiş bir dosya bulunmuyor.");
+      return;
+    }
+
+    try {
+      setDownloadingDocumentId(documentItem.id);
+      setDocumentFileError("");
+
+      const response = await api.get(
+        `/api/ServiceRequests/${id}/documents/${documentItem.id}/file`,
+        {
+          responseType: "blob",
+        },
+      );
+
+      const fileUrl = window.URL.createObjectURL(response.data);
+      const downloadLink = window.document.createElement("a");
+
+      downloadLink.href = fileUrl;
+      downloadLink.download =
+        documentItem.originalFileName || "indirilen-dosya";
+
+      window.document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+
+      window.setTimeout(() => {
+        window.URL.revokeObjectURL(fileUrl);
+      }, 100);
+    } catch (error) {
+      setDocumentFileError(
+        error.response?.status === 404
+          ? "İndirilecek dosya bulunamadı."
+          : "Dosya indirilirken bir hata oluştu.",
+      );
+    } finally {
+      setDownloadingDocumentId(null);
     }
   };
 
@@ -279,6 +366,52 @@ function ServiceRequestDetailPage() {
       );
     } finally {
       setDeletingNoteId(null);
+    }
+  };
+
+  const handleStartNoteEdit = (note) => {
+    setEditingNoteId(note.id);
+    setEditingNoteText(note.noteText);
+    setNoteEditError("");
+  };
+
+  const handleCancelNoteEdit = () => {
+    setEditingNoteId(null);
+    setEditingNoteText("");
+    setNoteEditError("");
+  };
+
+  const handleSaveNoteEdit = async (noteId) => {
+    const trimmedNoteText = editingNoteText.trim();
+
+    if (!trimmedNoteText) {
+      setNoteEditError("Not metni boş olamaz.");
+      return;
+    }
+
+    try {
+      setSavingNoteId(noteId);
+      setNoteEditError("");
+
+      await api.put(`/api/ServiceRequests/${id}/notes/${noteId}`, {
+        noteText: trimmedNoteText,
+      });
+
+      const detailResponse = await api.get(`/api/ServiceRequests/${id}`);
+
+      setServiceRequest(detailResponse.data);
+      setEditingNoteId(null);
+      setEditingNoteText("");
+    } catch (error) {
+      console.error("Not güncellenemedi:", error);
+
+      setNoteEditError(
+        error.response?.data?.detail ||
+          error.response?.data?.title ||
+          "Not güncellenirken bir hata oluştu.",
+      );
+    } finally {
+      setSavingNoteId(null);
     }
   };
 
@@ -380,6 +513,7 @@ function ServiceRequestDetailPage() {
             onChange={(event) => setNewNote(event.target.value)}
             placeholder="Hizmet talebiyle ilgili notunuzu yazın..."
             rows="4"
+            maxLength={2000}
           />
 
           {noteError && (
@@ -399,18 +533,88 @@ function ServiceRequestDetailPage() {
           <div className="service-request-items-list">
             {serviceRequest.notes.map((note) => (
               <article key={note.id} className="service-request-list-item">
-                <p>{note.noteText}</p>
+                {editingNoteId === note.id ? (
+                  <div className="note-edit-container">
+                    <label htmlFor={`edit-note-${note.id}`}>
+                      Not Metnini Düzenle
+                    </label>
 
-                <time>{formatUtcDateTime(note.createdAt)}</time>
+                    <textarea
+                      id={`edit-note-${note.id}`}
+                      className="note-edit-textarea"
+                      value={editingNoteText}
+                      onChange={(event) => {
+                        setEditingNoteText(event.target.value);
 
-                <button
-                  type="button"
-                  className="note-delete-button"
-                  onClick={() => handleDeleteNote(note.id)}
-                  disabled={deletingNoteId === note.id}
-                >
-                  {deletingNoteId === note.id ? "Siliniyor..." : "Notu Sil"}
-                </button>
+                        if (noteEditError) {
+                          setNoteEditError("");
+                        }
+                      }}
+                      rows="4"
+                      maxLength={2000}
+                      disabled={savingNoteId === note.id}
+                    />
+
+                    {noteEditError && (
+                      <p className="service-request-note-error">
+                        {noteEditError}
+                      </p>
+                    )}
+
+                    <div className="note-edit-actions">
+                      <button
+                        type="button"
+                        className="note-save-button"
+                        onClick={() => handleSaveNoteEdit(note.id)}
+                        disabled={savingNoteId === note.id}
+                      >
+                        {savingNoteId === note.id
+                          ? "Kaydediliyor..."
+                          : "Kaydet"}
+                      </button>
+
+                      <button
+                        type="button"
+                        className="note-cancel-button"
+                        onClick={handleCancelNoteEdit}
+                        disabled={savingNoteId === note.id}
+                      >
+                        İptal
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <p>{note.noteText}</p>
+
+                    <time>{formatUtcDateTime(note.createdAt)}</time>
+
+                    <div className="note-item-actions">
+                      <button
+                        type="button"
+                        className="note-edit-button"
+                        onClick={() => handleStartNoteEdit(note)}
+                        disabled={
+                          deletingNoteId === note.id ||
+                          (editingNoteId !== null && editingNoteId !== note.id)
+                        }
+                      >
+                        Düzenle
+                      </button>
+
+                      <button
+                        type="button"
+                        className="note-delete-button"
+                        onClick={() => handleDeleteNote(note.id)}
+                        disabled={deletingNoteId === note.id}
+                      >
+                        {deletingNoteId === note.id
+                          ? "Siliniyor..."
+                          : "Notu Sil"}
+                      </button>
+                    </div>
+                  </>
+                )}
               </article>
             ))}
           </div>
@@ -466,6 +670,10 @@ function ServiceRequestDetailPage() {
           </p>
         )}
 
+        {documentFileError && (
+          <p className="service-request-document-error">{documentFileError}</p>
+        )}
+
         {serviceRequest.documents?.length > 0 ? (
           <div className="service-request-items-list">
             {serviceRequest.documents.map((document) => (
@@ -489,6 +697,13 @@ function ServiceRequestDetailPage() {
 
                 <p>{document.description || "Açıklama girilmemiş."}</p>
 
+                {document.hasFile && (
+                  <p className="document-file-info">
+                    <strong>Yüklü Dosya:</strong>{" "}
+                    {document.originalFileName || "Dosya"}
+                  </p>
+                )}
+
                 <time>Eklenme: {formatUtcDateTime(document.createdAt)}</time>
 
                 {document.deliveredDate && (
@@ -509,6 +724,75 @@ function ServiceRequestDetailPage() {
                       ? "Bekliyor Olarak İşaretle"
                       : "Teslim Edildi Olarak İşaretle"}
                 </button>
+
+                <div className="document-file-actions">
+                  {document.hasFile && (
+                    <button
+                      type="button"
+                      className="document-download-button"
+                      onClick={() => handleDownloadDocumentFile(document)}
+                      disabled={downloadingDocumentId !== null}
+                    >
+                      {downloadingDocumentId === document.id
+                        ? "İndiriliyor..."
+                        : "Dosyayı İndir"}
+                    </button>
+                  )}
+
+                  <input
+                    type="file"
+                    disabled={uploadingDocumentId !== null}
+                    onChange={(event) => {
+                      const selectedFile = event.target.files?.[0];
+
+                      if (!selectedFile) {
+                        return;
+                      }
+
+                      setSelectedDocumentFiles((previousFiles) => ({
+                        ...previousFiles,
+                        [document.id]: selectedFile,
+                      }));
+
+                      setDocumentFileError("");
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    className="document-upload-button"
+                    onClick={() => {
+                      if (document.hasFile) {
+                        const currentFileName =
+                          document.originalFileName || "Mevcut dosya";
+
+                        const newFileName =
+                          selectedDocumentFiles[document.id]?.name ||
+                          "seçilen dosya";
+
+                        const isConfirmed = window.confirm(
+                          `"${currentFileName}" dosyası "${newFileName}" ile değiştirilecek.\n\nBu işlemden emin misiniz?`,
+                        );
+
+                        if (!isConfirmed) {
+                          return;
+                        }
+                      }
+
+                      handleUploadDocumentFile(document.id);
+                    }}
+                    disabled={
+                      uploadingDocumentId !== null ||
+                      !selectedDocumentFiles[document.id]
+                    }
+                  >
+                    {uploadingDocumentId === document.id
+                      ? "Yükleniyor..."
+                      : document.hasFile
+                        ? "Dosyayı Değiştir"
+                        : "Dosyayı Yükle"}
+                  </button>
+                </div>
               </article>
             ))}
           </div>
