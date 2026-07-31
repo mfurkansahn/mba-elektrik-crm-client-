@@ -502,18 +502,7 @@
 }
 
 .reminder-completion-button {
-  margin-top: 14px;
-  padding: 9px 14px;
-  color: #ffffff;
   background-color: #8b5cf6;
-  border: none;
-  border-radius: 7px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
 }
 
 .reminder-completion-button:hover:not(:disabled) {
@@ -521,26 +510,247 @@
   transform: translateY(-1px);
 }
 
-.reminder-completion-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
+.reminder-item-actions,
+.reminder-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-.document-delivery-button {
-  display: block;
-  width: fit-content;
-  margin-top: 14px;
-  padding: 9px 14px;
+.reminder-edit-container {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background-color: #faf5ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.reminder-edit-container label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reminder-edit-textarea,
+.reminder-edit-date-input {
+  width: 100%;
+  padding: 12px 14px;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font: inherit;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.reminder-edit-textarea {
+  min-height: 100px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.reminder-edit-textarea:focus,
+.reminder-edit-date-input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.reminder-edit-textarea:disabled,
+.reminder-edit-date-input:disabled {
+  color: #64748b;
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.reminder-completion-button,
+.reminder-edit-button,
+.reminder-save-button,
+.reminder-cancel-button,
+.reminder-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 0;
+  padding: 9px 15px;
   color: #ffffff;
-  background-color: #0ea5e9;
   border: none;
-  border-radius: 7px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.reminder-edit-button {
+  background-color: #2563eb;
+}
+
+.reminder-edit-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.reminder-save-button {
+  background-color: #15803d;
+}
+
+.reminder-save-button:hover:not(:disabled) {
+  background-color: #166534;
+  transform: translateY(-1px);
+}
+
+.reminder-cancel-button {
+  color: #334155;
+  background-color: #e2e8f0;
+}
+
+.reminder-cancel-button:hover:not(:disabled) {
+  background-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.reminder-delete-button {
+  background-color: #dc2626;
+}
+
+.reminder-delete-button:hover:not(:disabled) {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.reminder-completion-button:disabled,
+.reminder-edit-button:disabled,
+.reminder-save-button:disabled,
+.reminder-cancel-button:disabled,
+.reminder-delete-button:disabled {
+  color: #64748b;
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+@media (max-width: 600px) {
+  .reminder-item-actions,
+  .reminder-edit-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .reminder-completion-button,
+  .reminder-edit-button,
+  .reminder-save-button,
+  .reminder-cancel-button,
+  .reminder-delete-button {
+    width: 100%;
+  }
+}
+
+.document-edit-container {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.document-edit-container label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.document-edit-name-input,
+.document-edit-description-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  color: #1e293b;
+  font: inherit;
+  line-height: 1.5;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.document-edit-description-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.document-edit-name-input:focus,
+.document-edit-description-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.document-edit-name-input:disabled,
+.document-edit-description-textarea:disabled {
+  color: #64748b;
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.document-item-actions,
+.document-edit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.document-delivery-button,
+.document-edit-button,
+.document-save-button,
+.document-cancel-button,
+.document-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 0;
+  padding: 9px 15px;
+  color: #ffffff;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   transition:
     background-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.document-delivery-button {
+  background-color: #0ea5e9;
 }
 
 .document-delivery-button:hover:not(:disabled) {
@@ -548,41 +758,75 @@
   transform: translateY(-1px);
 }
 
-.document-delivery-button:disabled {
+.document-edit-button {
+  background-color: #2563eb;
+}
+
+.document-edit-button:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.document-save-button {
+  background-color: #15803d;
+}
+
+.document-save-button:hover:not(:disabled) {
+  background-color: #166534;
+  transform: translateY(-1px);
+}
+
+.document-cancel-button {
+  color: #334155;
+  background-color: #e2e8f0;
+}
+
+.document-cancel-button:hover:not(:disabled) {
+  background-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.document-delete-button {
+  background-color: #dc2626;
+}
+
+.document-delete-button:hover:not(:disabled) {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.document-delivery-button:disabled,
+.document-edit-button:disabled,
+.document-save-button:disabled,
+.document-cancel-button:disabled,
+.document-delete-button:disabled {
+  color: #64748b;
+  background-color: #cbd5e1;
   cursor: not-allowed;
-  opacity: 0.65;
+  opacity: 0.75;
+  transform: none;
+}
+
+@media (max-width: 600px) {
+  .document-item-actions,
+  .document-edit-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .document-delivery-button,
+  .document-edit-button,
+  .document-save-button,
+  .document-cancel-button,
+  .document-delete-button {
+    width: 100%;
+    line-height: 1.3;
+  }
 }
 
 .service-request-document-item time {
   display: block;
   margin-top: 6px;
-}
-
-.note-delete-button {
-  display: block;
-  width: fit-content;
-  margin-top: 12px;
-  padding: 8px 13px;
-  color: #ffffff;
-  background-color: #dc2626;
-  border: none;
-  border-radius: 7px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.note-delete-button:hover:not(:disabled) {
-  background-color: #b91c1c;
-  transform: translateY(-1px);
-}
-
-.note-delete-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
 }
 
 .document-file-info {
@@ -746,10 +990,18 @@
 .note-save-button,
 .note-cancel-button,
 .note-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 40px;
+  margin: 0;
   padding: 9px 15px;
   color: #ffffff;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1;
   border: none;
   border-radius: 8px;
   cursor: pointer;
