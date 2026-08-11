@@ -237,3 +237,19 @@
     font-size: 30px;
   }
 }
+
+.summary-card-link {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.summary-card-link span::after {
+  content: " →";
+  transition: margin-left 0.2s ease;
+}
+
+.summary-card-link:hover span::after {
+  margin-left: 5px;
+}
