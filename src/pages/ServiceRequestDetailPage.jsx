@@ -125,6 +125,12 @@ function ServiceRequestDetailPage() {
   const [reminderEditError, setReminderEditError] = useState("");
   const [deletingReminderId, setDeletingReminderId] = useState(null);
 
+  const [statuses, setStatuses] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [statusUpdating, setStatusUpdating] = useState(false);
+  const [statusSuccessMessage, setStatusSuccessMessage] = useState("");
+  const [statusError, setStatusError] = useState("");
+
   useEffect(() => {
     const fetchServiceRequest = async () => {
       try {
@@ -145,6 +151,60 @@ function ServiceRequestDetailPage() {
 
     fetchServiceRequest();
   }, [id]);
+
+  useEffect(() => {
+    const fetchStatuses = async () => {
+      try {
+        setStatusError("");
+
+        const response = await api.get(
+          "/api/ReferenceData/service-request-statuses",
+        );
+        setStatuses(response.data);
+      } catch (error) {
+        console.error("Durum seçenekleri alınamadı:", error);
+        setStatusError("Durum seçenekleri yüklenirken bir hata oluştu.");
+      }
+    };
+
+    fetchStatuses();
+  }, []);
+
+  const handleStatusUpdate = async () => {
+    if (!selectedStatus) {
+      setStatusError("Lütfen bir durum seçin.");
+      return;
+    }
+
+    if (selectedStatus === serviceRequest.status) {
+      setStatusError("Seçtiğiniz durum zaten talebin mevcut durumudur.");
+      return;
+    }
+
+    try {
+      setStatusUpdating(true);
+      setStatusError("");
+      setStatusSuccessMessage("");
+
+      await api.patch(`/api/ServiceRequests/${id}/status`, {
+        status: selectedStatus,
+      });
+
+      const response = await api.get(`/api/ServiceRequests/${id}`);
+
+      setServiceRequest(response.data);
+      setSelectedStatus(response.data.status);
+      setStatusSuccessMessage("Hizmet talebinin durumu güncellendi.");
+    } catch (error) {
+      console.error("Durum güncellenemedi:", error);
+
+      setStatusError(
+        error.response?.data?.detail || "Durum güncellenirken bir hata oluştu.",
+      );
+    } finally {
+      setStatusUpdating(false);
+    }
+  };
 
   const handleAddNote = async (event) => {
     event.preventDefault();
@@ -345,6 +405,7 @@ function ServiceRequestDetailPage() {
 
       const response = await api.get(`/api/ServiceRequests/${id}`);
       setServiceRequest(response.data);
+      setSelectedStatus(response.data.status);
 
       setSelectedDocumentFiles((previousFiles) => {
         const updatedFiles = { ...previousFiles };
@@ -751,9 +812,50 @@ function ServiceRequestDetailPage() {
 
           <div className="service-request-info-item">
             <span>Durum</span>
+
             <strong className="service-request-status">
               {serviceRequest.status}
             </strong>
+
+            <select
+              value={selectedStatus}
+              onChange={(event) => {
+                setSelectedStatus(event.target.value);
+                setStatusError("");
+                setStatusSuccessMessage("");
+              }}
+              disabled={statusUpdating || statuses.length === 0}
+            >
+              <option value="" disabled>
+                Durum seçin
+              </option>
+
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={handleStatusUpdate}
+              disabled={
+                statusUpdating ||
+                !selectedStatus ||
+                selectedStatus === serviceRequest.status
+              }
+            >
+              {statusUpdating ? "Güncelleniyor..." : "Durumu Güncelle"}
+            </button>
+
+            {statusSuccessMessage && (
+              <p className="status-success-message">{statusSuccessMessage}</p>
+            )}
+
+            {statusError && (
+              <p className="status-error-message">{statusError}</p>
+            )}
           </div>
 
           <div className="service-request-info-item">
