@@ -11,6 +11,7 @@ import CreateServiceRequestPage from "./pages/CreateServiceRequestPage";
 import PassiveCustomersPage from "./pages/PassiveCustomersPage";
 import ServiceRequestDetailPage from "./pages/ServiceRequestDetailPage";
 import EditServiceRequestPage from "./pages/EditServiceRequestPage";
+import CustomerAccountsPage from "./pages/CustomerAccountsPage";
 import "./App.css";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/customers/new" element={<CreateCustomerPage />} />
         <Route path="/customers/passive" element={<PassiveCustomersPage />} />
         <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
+        <Route path="/customer-accounts" element={<CustomerAccountsPage />} />
         <Route path="/service-requests" element={<ServiceRequestsPage />} />
         <Route
           path="/service-requests/:id"
