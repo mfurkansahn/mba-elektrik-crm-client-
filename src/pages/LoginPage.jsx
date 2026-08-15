@@ -21,8 +21,16 @@ function LoginPage() {
         password,
       });
 
+      const roles = response.data.roles ?? [];
+
       localStorage.setItem("token", response.data.token);
-      navigate("/dashboard", { replace: true });
+      localStorage.setItem("roles", JSON.stringify(roles));
+
+      if (roles.includes("Customer")) {
+        navigate("/customer-portal", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     } catch (error) {
       if (error.response?.status === 401) {
         setError("E-posta veya şifre hatalı.");

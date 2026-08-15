@@ -1,11 +1,9 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./DashboardLayout.css";
+import "./CustomerPortalLayout.css";
 
-function DashboardLayout() {
+function CustomerPortalLayout() {
   const navigate = useNavigate();
-
-  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
-  const isAdmin = roles.includes("Admin");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -17,17 +15,18 @@ function DashboardLayout() {
     <div className="dashboard-layout">
       <header className="dashboard-header">
         <div className="dashboard-brand">
-          <strong>MBA Elektrik CRM</strong>
-          <span>İş Takip Sistemi</span>
+          <strong>MBA Elektrik</strong>
+          <span>Müşteri Portalı</span>
         </div>
 
         <nav className="dashboard-nav">
-          <NavLink to="/dashboard">Ana Panel</NavLink>
-          <NavLink to="/customers">Müşteriler</NavLink>
-          <NavLink to="/service-requests">Hizmet Talepleri</NavLink>
-          {isAdmin && (
-            <NavLink to="/customer-accounts">Portal Hesapları</NavLink>
-          )}
+          <NavLink to="/customer-portal" end>
+            Profilim
+          </NavLink>
+
+          <NavLink to="/customer-portal/service-requests">
+            Hizmet Taleplerim
+          </NavLink>
         </nav>
 
         <button type="button" className="logout-button" onClick={handleLogout}>
@@ -42,4 +41,4 @@ function DashboardLayout() {
   );
 }
 
-export default DashboardLayout;
+export default CustomerPortalLayout;

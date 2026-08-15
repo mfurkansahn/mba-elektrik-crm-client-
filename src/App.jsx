@@ -12,6 +12,10 @@ import PassiveCustomersPage from "./pages/PassiveCustomersPage";
 import ServiceRequestDetailPage from "./pages/ServiceRequestDetailPage";
 import EditServiceRequestPage from "./pages/EditServiceRequestPage";
 import CustomerAccountsPage from "./pages/CustomerAccountsPage";
+import CustomerPortalLayout from "./components/CustomerPortalLayout";
+import CustomerPortalProfilePage from "./pages/CustomerPortalProfilePage";
+import CustomerPortalServiceRequestsPage from "./pages/CustomerPortalServiceRequestsPage";
+import CustomerPortalServiceRequestDetailPage from "./pages/CustomerPortalServiceRequestDetailPage";
 import "./App.css";
 
 function App() {
@@ -22,7 +26,7 @@ function App() {
 
       <Route
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["Admin", "User"]}>
             <DashboardLayout />
           </ProtectedRoute>
         }
@@ -32,7 +36,14 @@ function App() {
         <Route path="/customers/new" element={<CreateCustomerPage />} />
         <Route path="/customers/passive" element={<PassiveCustomersPage />} />
         <Route path="/customers/:id/edit" element={<EditCustomerPage />} />
-        <Route path="/customer-accounts" element={<CustomerAccountsPage />} />
+        <Route
+          path="/customer-accounts"
+          element={
+            <ProtectedRoute allowedRoles={["Admin"]}>
+              <CustomerAccountsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/service-requests" element={<ServiceRequestsPage />} />
         <Route
           path="/service-requests/:id"
@@ -47,6 +58,26 @@ function App() {
           element={<EditServiceRequestPage />}
         />
       </Route>
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={["Customer"]}>
+            <CustomerPortalLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          path="/customer-portal"
+          element={<CustomerPortalProfilePage />}
+        />
+      </Route>
+      <Route
+        path="/customer-portal/service-requests"
+        element={<CustomerPortalServiceRequestsPage />}
+      />
+      <Route
+        path="/customer-portal/service-requests/:id"
+        element={<CustomerPortalServiceRequestDetailPage />}
+      />
     </Routes>
   );
 }
