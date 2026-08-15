@@ -285,13 +285,17 @@ function CustomerAccountsPage() {
               <tbody>
                 {customerAccounts.map((account) => (
                   <tr key={account.userId}>
-                    <td>{account.customerName}</td>
-                    <td>{account.fullName}</td>
-                    <td>{account.email}</td>
-                    <td>
+                    <td data-label="Müşteri">{account.customerName}</td>
+
+                    <td data-label="Hesap Sahibi">{account.fullName}</td>
+
+                    <td data-label="E-posta">{account.email}</td>
+
+                    <td data-label="Oluşturulma Tarihi">
                       {new Date(account.createdAt).toLocaleString("tr-TR")}
                     </td>
-                    <td>
+
+                    <td data-label="İşlemler">
                       <button
                         className="customer-account-delete-button"
                         type="button"

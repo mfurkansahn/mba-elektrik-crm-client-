@@ -216,3 +216,76 @@
   border-color: #d1d5db;
   cursor: not-allowed;
 }
+
+@media (max-width: 900px) {
+  .customer-accounts-table-wrapper {
+    overflow: visible;
+  }
+
+  .customer-accounts-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .customer-accounts-table thead {
+    display: none;
+  }
+
+  .customer-accounts-table tbody {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .customer-accounts-table tr {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+  }
+
+  .customer-accounts-table td {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 12px;
+    padding: 13px 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .customer-accounts-table td::before {
+    color: #6b7280;
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .customer-accounts-table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .customer-accounts-page {
+    padding: 16px;
+  }
+
+  .customer-accounts-card {
+    padding: 16px;
+  }
+
+  .customer-accounts-table tbody {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-accounts-table td {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .customer-account-submit-button {
+    width: 100%;
+  }
+}

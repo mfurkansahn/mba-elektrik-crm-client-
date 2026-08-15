@@ -129,6 +129,72 @@
   font-weight: 600;
 }
 
+@media (max-width: 900px) {
+  .customers-table-wrapper {
+    overflow: visible;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .customers-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .customers-table thead {
+    display: none;
+  }
+
+  .customers-table tbody {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .customers-table tr {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    background-color: #ffffff;
+    border: 1px solid #d9e2ec;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(16, 42, 67, 0.08);
+  }
+
+  .customers-table td {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 12px;
+    padding: 13px 16px;
+    overflow-wrap: anywhere;
+  }
+
+  .customers-table td::before {
+    color: #627d98;
+    content: attr(data-label);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .customers-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .customer-actions {
+    flex-wrap: wrap;
+  }
+
+  .customers-total {
+    margin-top: 16px;
+    background-color: #ffffff;
+    border: 1px solid #d9e2ec;
+    border-radius: 10px;
+  }
+}
+
 @media (max-width: 650px) {
   .customers-page {
     padding: 20px;
@@ -148,5 +214,13 @@
   .passive-customers-button {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .customers-table tbody {
+    grid-template-columns: 1fr;
+  }
+
+  .customers-table td {
+    grid-template-columns: 100px minmax(0, 1fr);
   }
 }

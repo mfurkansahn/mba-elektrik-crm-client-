@@ -872,3 +872,250 @@
   font-weight: 700;
   text-decoration: none;
 }
+
+@media (max-width: 1024px) {
+  .company-header-inner {
+    width: calc(100% - 40px);
+  }
+
+  .company-page-shell {
+    width: calc(100% - 48px);
+  }
+
+  .company-nav {
+    gap: 18px;
+  }
+
+  .company-hero,
+  .company-hero-content {
+    min-height: 640px;
+  }
+
+  .company-hero-content {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(320px, 0.85fr);
+    gap: 36px;
+    padding: 64px 0;
+  }
+
+  .company-hero-copy h1 {
+    font-size: 46px;
+  }
+
+  .company-hero-visual {
+    min-height: 460px;
+  }
+
+  .company-identity-card {
+    right: 0;
+    left: 0;
+    padding: 24px;
+  }
+
+  .company-identity-card img {
+    height: 250px;
+  }
+
+  .company-location-card {
+    right: 0;
+  }
+
+  .company-section {
+    padding: 90px 0;
+  }
+
+  .company-section-heading {
+    gap: 48px;
+  }
+
+  .company-services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .company-about-grid,
+  .company-contact-grid {
+    gap: 52px;
+  }
+
+  .company-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 42px 24px;
+  }
+
+  .company-process-grid::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-header-inner {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    width: calc(100% - 32px);
+    min-height: auto;
+    padding: 12px 0 10px;
+  }
+
+  .company-brand {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .company-brand img {
+    width: 56px;
+    height: 38px;
+  }
+
+  .company-brand-text strong {
+    font-size: 14px;
+  }
+
+  .company-brand-text small {
+    font-size: 9px;
+  }
+
+  .application-login-link {
+    gap: 6px;
+    padding: 10px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .company-nav {
+    order: 3;
+    width: 100%;
+    gap: 8px;
+    padding-top: 10px;
+    overflow-x: auto;
+    border-top: 1px solid #d9e4ed;
+    scrollbar-width: none;
+  }
+
+  .company-trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .company-section {
+    padding: 72px 0;
+  }
+
+  .company-section-heading,
+  .company-about-grid,
+  .company-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .company-section-heading > *,
+  .company-about-grid > *,
+  .company-contact-grid > * {
+    min-width: 0;
+  }
+
+  .company-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .company-service-card {
+    min-height: auto;
+    padding: 26px;
+  }
+
+  .company-service-card h3 {
+    margin-top: 32px;
+  }
+
+  .company-services-callout {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .company-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 38px 18px;
+  }
+
+  .company-process-grid::before {
+    display: none;
+  }
+
+  .company-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .company-nav a {
+    flex: 0 0 auto;
+    padding: 6px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .company-nav a::after {
+    bottom: 0;
+  }
+
+  .company-page-shell {
+    width: calc(100% - 32px);
+  }
+
+  .company-hero {
+    min-height: auto;
+    background: #f9fbfd;
+  }
+
+  .company-hero-grid {
+    inset: 0;
+    opacity: 0.45;
+  }
+
+  .company-hero-content {
+    grid-template-columns: 1fr;
+    gap: 42px;
+    min-height: auto;
+    padding: 56px 0;
+  }
+
+  .company-hero-copy h1 {
+    font-size: clamp(40px, 12vw, 52px);
+  }
+
+  .company-hero-copy h1 em {
+    white-space: normal;
+  }
+
+  .company-hero-description {
+    margin-top: 22px;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .company-hero-actions {
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+
+  .company-hero-visual {
+    width: 100%;
+    min-height: 410px;
+    margin: 0 auto;
+  }
+
+  .company-identity-card {
+    top: 0;
+    right: 16px;
+    left: 0;
+    padding: 24px;
+  }
+
+  .company-identity-card img {
+    height: 230px;
+  }
+
+  .company-location-card {
+    right: 0;
+    bottom: 0;
+  }
+}

@@ -104,15 +104,22 @@ function PassiveCustomersPage() {
             <tbody>
               {customersData.items.map((customer) => (
                 <tr key={customer.id}>
-                  <td>{customer.fullNameOrCompanyName}</td>
-                  <td>{customer.phone}</td>
-                  <td>{customer.email || "-"}</td>
-                  <td>
+                  <td data-label="Ad / Firma">
+                    {customer.fullNameOrCompanyName}
+                  </td>
+
+                  <td data-label="Telefon">{customer.phone}</td>
+
+                  <td data-label="E-posta">{customer.email || "-"}</td>
+
+                  <td data-label="Konum">
                     {customer.city}
                     {customer.district ? ` / ${customer.district}` : ""}
                   </td>
-                  <td>{customer.customerType}</td>
-                  <td>
+
+                  <td data-label="Müşteri Türü">{customer.customerType}</td>
+
+                  <td data-label="İşlemler">
                     <div className="customer-actions">
                       <button
                         type="button"

@@ -95,8 +95,8 @@ function ServiceRequestsPage() {
     const fetchReferenceData = async () => {
       try {
         const [serviceTypesResponse, statusesResponse] = await Promise.all([
-          api.get("/api/ReferenceData/service-types"),
-          api.get("/api/ReferenceData/statuses"),
+          api.get("/api/ReferenceData/service-request-types"),
+          api.get("/api/ReferenceData/service-request-statuses"),
         ]);
 
         setServiceTypes(serviceTypesResponse.data);
@@ -271,8 +271,8 @@ function ServiceRequestsPage() {
             <tbody>
               {serviceRequestsData.items.map((serviceRequest) => (
                 <tr key={serviceRequest.id}>
-                  <td>{serviceRequest.customerName}</td>
-                  <td>
+                  <td data-label="Müşteri">{serviceRequest.customerName}</td>
+                  <td data-label="Başlık">
                     <Link
                       to={`/service-requests/${serviceRequest.id}`}
                       className="service-request-title-link"
@@ -280,21 +280,26 @@ function ServiceRequestsPage() {
                       {serviceRequest.title}
                     </Link>
                   </td>
-                  <td>{serviceRequest.serviceType}</td>
-                  <td>{serviceRequest.status}</td>
-                  <td>
+
+                  <td data-label="Hizmet Türü">{serviceRequest.serviceType}</td>
+
+                  <td data-label="Durum">{serviceRequest.status}</td>
+
+                  <td data-label="Başlangıç Tarihi">
                     {new Date(serviceRequest.startDate).toLocaleDateString(
                       "tr-TR",
                     )}
                   </td>
-                  <td>
+
+                  <td data-label="Son Tarih">
                     {serviceRequest.dueDate
                       ? new Date(serviceRequest.dueDate).toLocaleDateString(
                           "tr-TR",
                         )
                       : "-"}
                   </td>
-                  <td>
+
+                  <td data-label="İşlemler">
                     <Link
                       to={`/service-requests/${serviceRequest.id}/edit`}
                       className="service-request-edit-link"
