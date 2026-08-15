@@ -17,13 +17,29 @@ import CustomerPortalProfilePage from "./pages/CustomerPortalProfilePage";
 import CustomerPortalServiceRequestsPage from "./pages/CustomerPortalServiceRequestsPage";
 import CustomerPortalServiceRequestDetailPage from "./pages/CustomerPortalServiceRequestDetailPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import PublicRoute from "./components/PublicRoute";
 import "./App.css";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Navigate to="/login" replace />
+          </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        }
+      />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
       <Route
