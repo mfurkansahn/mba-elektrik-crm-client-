@@ -16,6 +16,7 @@ import CustomerPortalLayout from "./components/CustomerPortalLayout";
 import CustomerPortalProfilePage from "./pages/CustomerPortalProfilePage";
 import CustomerPortalServiceRequestsPage from "./pages/CustomerPortalServiceRequestsPage";
 import CustomerPortalServiceRequestDetailPage from "./pages/CustomerPortalServiceRequestDetailPage";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 import "./App.css";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
       <Route
         element={
@@ -69,15 +71,17 @@ function App() {
           path="/customer-portal"
           element={<CustomerPortalProfilePage />}
         />
+
+        <Route
+          path="/customer-portal/service-requests"
+          element={<CustomerPortalServiceRequestsPage />}
+        />
+
+        <Route
+          path="/customer-portal/service-requests/:id"
+          element={<CustomerPortalServiceRequestDetailPage />}
+        />
       </Route>
-      <Route
-        path="/customer-portal/service-requests"
-        element={<CustomerPortalServiceRequestsPage />}
-      />
-      <Route
-        path="/customer-portal/service-requests/:id"
-        element={<CustomerPortalServiceRequestDetailPage />}
-      />
     </Routes>
   );
 }

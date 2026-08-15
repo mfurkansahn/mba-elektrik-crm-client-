@@ -13,7 +13,7 @@ function ProtectedRoute({ children, allowedRoles = [] }) {
     allowedRoles.some((role) => roles.includes(role));
 
   if (!hasRequiredRole) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/unauthorized" replace />;
   }
 
   return children;
