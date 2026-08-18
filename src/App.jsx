@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import CustomersPage from "./pages/CustomersPage";
@@ -18,13 +18,12 @@ import CustomerPortalServiceRequestsPage from "./pages/CustomerPortalServiceRequ
 import CustomerPortalServiceRequestDetailPage from "./pages/CustomerPortalServiceRequestDetailPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import PublicRoute from "./components/PublicRoute";
-import HomePage from "./pages/HomePage";
 import "./App.css";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
       <Route
         path="/login"
