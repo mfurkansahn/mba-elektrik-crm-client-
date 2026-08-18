@@ -351,4 +351,5 @@ Aşağıdaki temel modüller tamamlanmıştır:
 ## Geliştirici
 
 **Mustafa Furkan Şahin**
+
 Bilgisayar Mühendisi
