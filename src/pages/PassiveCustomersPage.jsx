@@ -8,6 +8,9 @@ function PassiveCustomersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const isAdmin = roles.includes("Admin");
+
   useEffect(() => {
     const fetchPassiveCustomers = async () => {
       try {
@@ -97,7 +100,7 @@ function PassiveCustomersPage() {
                 <th>E-posta</th>
                 <th>Konum</th>
                 <th>Müşteri Türü</th>
-                <th>İşlemler</th>
+                {isAdmin && <th>İşlemler</th>}
               </tr>
             </thead>
 
@@ -119,16 +122,18 @@ function PassiveCustomersPage() {
 
                   <td data-label="Müşteri Türü">{customer.customerType}</td>
 
-                  <td data-label="İşlemler">
-                    <div className="customer-actions">
-                      <button
-                        type="button"
-                        onClick={() => handleActivate(customer)}
-                      >
-                        Yeniden Aktif Et
-                      </button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td data-label="İşlemler">
+                      <div className="customer-actions">
+                        <button
+                          type="button"
+                          onClick={() => handleActivate(customer)}
+                        >
+                          Yeniden Aktif Et
+                        </button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

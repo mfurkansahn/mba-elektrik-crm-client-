@@ -9,6 +9,9 @@ function CustomersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const isAdmin = roles.includes("Admin");
+
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
@@ -132,12 +135,14 @@ function CustomersPage() {
                         Düzenle
                       </button>
 
-                      <button
-                        type="button"
-                        onClick={() => handleDeactivate(customer)}
-                      >
-                        Pasife Al
-                      </button>
+                      {isAdmin && (
+                        <button
+                          type="button"
+                          onClick={() => handleDeactivate(customer)}
+                        >
+                          Pasife Al
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>

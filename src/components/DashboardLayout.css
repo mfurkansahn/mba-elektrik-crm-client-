@@ -80,6 +80,10 @@
   width: 100%;
 }
 
+.mobile-menu-button {
+  display: none;
+}
+
 @media (max-width: 850px) {
   .dashboard-header {
     flex-wrap: wrap;
@@ -104,6 +108,41 @@
   }
 }
 
+/* @media (max-width: 600px) {
+  .dashboard-header {
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .dashboard-brand {
+    min-width: 0;
+  }
+
+  .dashboard-brand strong {
+    font-size: 18px;
+  }
+
+  .dashboard-brand span {
+    font-size: 12px;
+  }
+
+  .logout-button {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+
+  .dashboard-nav {
+    gap: 8px;
+  }
+
+  .dashboard-nav a {
+    flex: 1 1 calc(50% - 4px);
+    padding: 10px 8px;
+    font-size: 14px;
+    text-align: center;
+  }
+} */
+
 @media (max-width: 600px) {
   .dashboard-header {
     gap: 12px;
@@ -115,26 +154,62 @@
   }
 
   .dashboard-brand strong {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   .dashboard-brand span {
-    font-size: 11px;
+    font-size: 14px;
   }
 
-  .logout-button {
-    padding: 9px 12px;
-    font-size: 12px;
+  .mobile-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    padding: 0;
+    color: #ffffff;
+    background-color: transparent;
+    border: 1px solid #f59e0b;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  .mobile-menu-button:hover {
+    color: #102a43;
+    background-color: #f59e0b;
   }
 
   .dashboard-nav {
+    display: none;
     gap: 8px;
+  }
+
+  .dashboard-header.mobile-menu-open .dashboard-nav {
+    display: flex;
   }
 
   .dashboard-nav a {
     flex: 1 1 calc(50% - 4px);
-    padding: 9px 8px;
-    font-size: 13px;
+    padding: 10px 8px;
+    font-size: 15px;
     text-align: center;
+    white-space: normal;
+  }
+
+  .logout-button {
+    display: none;
+    order: 4;
+    width: 100%;
+    margin-left: 0;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .dashboard-header.mobile-menu-open .logout-button {
+    display: block;
   }
 }

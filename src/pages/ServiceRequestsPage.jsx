@@ -25,6 +25,8 @@ function ServiceRequestsPage() {
   const [serviceTypes, setServiceTypes] = useState([]);
   const [statuses, setStatuses] = useState([]);
 
+  const [areAdvancedFiltersOpen, setAreAdvancedFiltersOpen] = useState(false);
+
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
 
@@ -48,6 +50,7 @@ function ServiceRequestsPage() {
     });
 
     setPageNumber(1);
+    setAreAdvancedFiltersOpen(false);
   };
 
   useEffect(() => {
@@ -153,97 +156,118 @@ function ServiceRequestsPage() {
             Filtreleri Temizle
           </button>
         </div>
-        <div className="service-request-filter-group">
-          <label htmlFor="status">Durum</label>
+        <button
+          type="button"
+          className="advanced-filters-toggle"
+          aria-expanded={areAdvancedFiltersOpen}
+          aria-controls="advanced-service-request-filters"
+          onClick={() =>
+            setAreAdvancedFiltersOpen((currentValue) => !currentValue)
+          }
+        >
+          {areAdvancedFiltersOpen
+            ? "Diğer Filtreleri Gizle"
+            : "Diğer Filtreleri Göster"}
+        </button>
 
-          <select
-            id="status"
-            name="status"
-            value={filters.status}
-            onChange={handleFilterChange}
-          >
-            <option value="">Tüm durumlar</option>
+        <div
+          id="advanced-service-request-filters"
+          className={`service-request-advanced-filters ${
+            areAdvancedFiltersOpen ? "open" : ""
+          }`}
+        >
+          <div className="service-request-filter-group">
+            <label htmlFor="status">Durum</label>
 
-            {statuses.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-        </div>
+            <select
+              id="status"
+              name="status"
+              value={filters.status}
+              onChange={handleFilterChange}
+            >
+              <option value="">Tüm durumlar</option>
 
-        <div className="service-request-filter-group">
-          <label htmlFor="serviceType">Hizmet Türü</label>
+              {statuses.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <select
-            id="serviceType"
-            name="serviceType"
-            value={filters.serviceType}
-            onChange={handleFilterChange}
-          >
-            <option value="">Tüm hizmet türleri</option>
+          <div className="service-request-filter-group">
+            <label htmlFor="serviceType">Hizmet Türü</label>
 
-            {serviceTypes.map((serviceType) => (
-              <option key={serviceType} value={serviceType}>
-                {serviceType}
-              </option>
-            ))}
-          </select>
-        </div>
+            <select
+              id="serviceType"
+              name="serviceType"
+              value={filters.serviceType}
+              onChange={handleFilterChange}
+            >
+              <option value="">Tüm hizmet türleri</option>
 
-        <div className="service-request-filter-group">
-          <label htmlFor="createdFrom">Oluşturulma Başlangıcı</label>
+              {serviceTypes.map((serviceType) => (
+                <option key={serviceType} value={serviceType}>
+                  {serviceType}
+                </option>
+              ))}
+            </select>
+          </div>
 
-          <input
-            id="createdFrom"
-            name="createdFrom"
-            type="date"
-            value={filters.createdFrom}
-            onChange={handleFilterChange}
-          />
-        </div>
+          <div className="service-request-filter-group">
+            <label htmlFor="createdFrom">Oluşturulma Başlangıcı</label>
 
-        <div className="service-request-filter-group">
-          <label htmlFor="createdTo">Oluşturulma Bitişi</label>
+            <input
+              id="createdFrom"
+              name="createdFrom"
+              type="date"
+              value={filters.createdFrom}
+              onChange={handleFilterChange}
+            />
+          </div>
 
-          <input
-            id="createdTo"
-            name="createdTo"
-            type="date"
-            value={filters.createdTo}
-            onChange={handleFilterChange}
-          />
-        </div>
+          <div className="service-request-filter-group">
+            <label htmlFor="createdTo">Oluşturulma Bitişi</label>
 
-        <div className="service-request-filter-group">
-          <label htmlFor="sortBy">Sıralama Alanı</label>
+            <input
+              id="createdTo"
+              name="createdTo"
+              type="date"
+              value={filters.createdTo}
+              onChange={handleFilterChange}
+            />
+          </div>
 
-          <select
-            id="sortBy"
-            name="sortBy"
-            value={filters.sortBy}
-            onChange={handleFilterChange}
-          >
-            <option value="createdAt">Oluşturulma Tarihi</option>
-            <option value="startDate">Başlangıç Tarihi</option>
-            <option value="dueDate">Son Tarih</option>
-            <option value="title">Başlık</option>
-            <option value="status">Durum</option>
-          </select>
-        </div>
+          <div className="service-request-filter-group">
+            <label htmlFor="sortBy">Sıralama Alanı</label>
 
-        <div className="service-request-filter-group">
-          <label htmlFor="sortDirection">Sıralama Yönü</label>
+            <select
+              id="sortBy"
+              name="sortBy"
+              value={filters.sortBy}
+              onChange={handleFilterChange}
+            >
+              <option value="createdAt">Oluşturulma Tarihi</option>
+              <option value="startDate">Başlangıç Tarihi</option>
+              <option value="dueDate">Son Tarih</option>
+              <option value="title">Başlık</option>
+              <option value="status">Durum</option>
+            </select>
+          </div>
 
-          <select
-            id="sortDirection"
-            name="sortDirection"
-            value={filters.sortDirection}
-            onChange={handleFilterChange}
-          >
-            <option value="desc">Azalan</option>
-            <option value="asc">Artan</option>
-          </select>
+          <div className="service-request-filter-group">
+            <label htmlFor="sortDirection">Sıralama Yönü</label>
+
+            <select
+              id="sortDirection"
+              name="sortDirection"
+              value={filters.sortDirection}
+              onChange={handleFilterChange}
+            >
+              <option value="desc">Azalan</option>
+              <option value="asc">Artan</option>
+            </select>
+          </div>
         </div>
       </section>
 

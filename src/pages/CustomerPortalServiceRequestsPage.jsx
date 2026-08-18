@@ -69,12 +69,19 @@ function CustomerPortalServiceRequestsPage() {
           <tbody>
             {serviceRequests.map((request) => (
               <tr key={request.id}>
-                <td>{request.title}</td>
-                <td>{request.serviceType}</td>
-                <td>{request.status}</td>
-                <td>{formatDate(request.startDate)}</td>
-                <td>{formatDate(request.dueDate)}</td>
-                <td>
+                <td data-label="Başlık">{request.title}</td>
+
+                <td data-label="Hizmet Türü">{request.serviceType}</td>
+
+                <td data-label="Durum">{request.status}</td>
+
+                <td data-label="Başlangıç Tarihi">
+                  {formatDate(request.startDate)}
+                </td>
+
+                <td data-label="Son Tarih">{formatDate(request.dueDate)}</td>
+
+                <td data-label="İşlem">
                   <Link to={`/customer-portal/service-requests/${request.id}`}>
                     Detayı Gör
                   </Link>
