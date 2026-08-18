@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import api from "../services/api";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../../services/api";
 import "./CreateCustomerPage.css";
 
 const formatTurkishPhone = (value) => {
   let digits = value.replace(/\D/g, "");
 
+  // Kullanıcı +90 veya başında 0 ile yapıştırırsa temizler.
   if (digits.startsWith("90") && digits.length > 10) {
     digits = digits.slice(2);
   }
@@ -26,55 +27,21 @@ const formatTurkishPhone = (value) => {
     .join(" ");
 };
 
-function EditCustomerPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+function CreateCustomerPage() {
   const [formData, setFormData] = useState({
     fullNameOrCompanyName: "",
     phone: "",
     email: "",
     address: "",
-    city: "",
+    city: "Ankara",
     district: "",
-    customerType: "",
+    customerType: "Bireysel",
     description: "",
   });
 
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        const response = await api.get(`/api/Customers/${id}`);
-        const customer = response.data;
-
-        setFormData({
-          fullNameOrCompanyName: customer.fullNameOrCompanyName || "",
-          phone: formatTurkishPhone(customer.phone || ""),
-          email: customer.email || "",
-          address: customer.address || "",
-          city: customer.city || "",
-          district: customer.district || "",
-          customerType: customer.customerType || "",
-          description: customer.description || "",
-        });
-      } catch (error) {
-        console.error("Müşteri bilgileri alınamadı:", error);
-
-        setError(
-          error.response?.data?.detail ||
-            error.response?.data?.title ||
-            "Müşteri bilgileri yüklenirken bir hata oluştu.",
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCustomer();
-  }, [id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -96,43 +63,55 @@ function EditCustomerPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
     try {
+      const phoneDigits = formData.phone.replace(/\D/g, "");
+
+      if (phoneDigits.length !== 10) {
+        setError("Telefon numarası 10 haneli olmalıdır.");
+        // setIsSubmitting(false);
+        return;
+      }
+
       const customerData = {
         ...formData,
         phone: `+90 ${formData.phone}`,
       };
 
-      await api.put(`/api/Customers/${id}`, customerData);
+      await api.post("/api/Customers", customerData);
       navigate("/customers");
     } catch (error) {
-      console.error("Müşteri güncellenirken hata oluştu:", error);
+      console.error("Müşteri oluşturulamadı:", error);
+
+      setError(
+        error.response?.data?.detail ||
+          error.response?.data?.title ||
+          "Müşteri kaydedilirken bir hata oluştu.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  if (loading) {
-    return <p>Müşteri bilgileri yükleniyor...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
 
   return (
     <main className="create-customer-page">
       <div className="create-customer-header">
         <div>
-          <h1>Müşteri Düzenle</h1>
-          <p>
-            {formData.fullNameOrCompanyName} müşterisinin bilgilerini
-            güncelleyin.
-          </p>
+          <h1>Yeni Müşteri Ekle</h1>
+          <p>Müşteri bilgilerini girerek yeni bir kayıt oluşturun.</p>
         </div>
 
         <Link to="/customers">Müşteri Listesine Dön</Link>
       </div>
 
       <form className="customer-form" onSubmit={handleSubmit}>
+        {error && (
+          <div className="form-error form-group-full" role="alert">
+            {error}
+          </div>
+        )}
         <div className="form-group">
           <label htmlFor="fullNameOrCompanyName">Ad Soyad / Firma Adı</label>
           <input
@@ -250,8 +229,9 @@ function EditCustomerPage() {
 
         <div className="form-actions form-group-full">
           <Link to="/customers">İptal</Link>
-          <button type="submit" className="primary-button">
-            Değişiklikleri Kaydet
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Kaydediliyor..." : "Müşteriyi Kaydet"}
           </button>
         </div>
       </form>
@@ -259,4 +239,4 @@ function EditCustomerPage() {
   );
 }
 
-export default EditCustomerPage;
+export default CreateCustomerPage;

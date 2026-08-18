@@ -1,23 +1,29 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import CustomersPage from "./pages/CustomersPage";
-import CreateCustomerPage from "./pages/CreateCustomerPage.jsx";
-import ProtectedRoute from "./components/ProtectedRoute";
-import DashboardLayout from "./components/DashboardLayout";
-import EditCustomerPage from "./pages/EditCustomerPage";
-import ServiceRequestsPage from "./pages/ServiceRequestsPage";
-import CreateServiceRequestPage from "./pages/CreateServiceRequestPage";
-import PassiveCustomersPage from "./pages/PassiveCustomersPage";
-import ServiceRequestDetailPage from "./pages/ServiceRequestDetailPage";
-import EditServiceRequestPage from "./pages/EditServiceRequestPage";
-import CustomerAccountsPage from "./pages/CustomerAccountsPage";
-import CustomerPortalLayout from "./components/CustomerPortalLayout";
-import CustomerPortalProfilePage from "./pages/CustomerPortalProfilePage";
-import CustomerPortalServiceRequestsPage from "./pages/CustomerPortalServiceRequestsPage";
-import CustomerPortalServiceRequestDetailPage from "./pages/CustomerPortalServiceRequestDetailPage";
-import UnauthorizedPage from "./pages/UnauthorizedPage";
-import PublicRoute from "./components/PublicRoute";
+
+import LoginPage from "./pages/auth/LoginPage";
+import UnauthorizedPage from "./pages/auth/UnauthorizedPage";
+
+import DashboardPage from "./pages/management/dashboard/DashboardPage";
+import CustomerAccountsPage from "./pages/management/customer-accounts/CustomerAccountsPage";
+
+import CustomerPortalProfilePage from "./pages/customer-portal/CustomerPortalProfilePage";
+import CustomerPortalServiceRequestsPage from "./pages/customer-portal/CustomerPortalServiceRequestsPage";
+import CustomerPortalServiceRequestDetailPage from "./pages/customer-portal/CustomerPortalServiceRequestDetailPage";
+
+import CustomersPage from "./pages/management/customers/CustomersPage";
+import CreateCustomerPage from "./pages/management/customers/CreateCustomerPage.jsx";
+import EditCustomerPage from "./pages/management/customers/EditCustomerPage";
+import PassiveCustomersPage from "./pages/management/customers/PassiveCustomersPage";
+
+import ServiceRequestsPage from "./pages/management/service-requests/ServiceRequestsPage";
+import CreateServiceRequestPage from "./pages/management/service-requests/CreateServiceRequestPage";
+import ServiceRequestDetailPage from "./pages/management/service-requests/ServiceRequestDetailPage";
+import EditServiceRequestPage from "./pages/management/service-requests/EditServiceRequestPage";
+
+import ProtectedRoute from "./components/routing/ProtectedRoute";
+import PublicRoute from "./components/routing/PublicRoute";
+import DashboardLayout from "./components/layouts/DashboardLayout";
+import CustomerPortalLayout from "./components/layouts/CustomerPortalLayout";
 import "./App.css";
 
 function App() {

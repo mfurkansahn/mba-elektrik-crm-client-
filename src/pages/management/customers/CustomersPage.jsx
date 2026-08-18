@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../../../services/api";
 import "./CustomersPage.css";
 import { Link, useNavigate } from "react-router-dom";
 
