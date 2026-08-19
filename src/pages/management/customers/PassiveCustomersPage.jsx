@@ -8,6 +8,9 @@ function PassiveCustomersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
   const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const isAdmin = roles.includes("Admin");
 
@@ -17,8 +20,8 @@ function PassiveCustomersPage() {
         const response = await api.get("/api/Customers", {
           params: {
             isActive: false,
-            pageNumber: 1,
-            pageSize: 10,
+            pageNumber,
+            pageSize,
           },
         });
 
@@ -37,7 +40,14 @@ function PassiveCustomersPage() {
     };
 
     fetchPassiveCustomers();
-  }, []);
+  }, [pageNumber, pageSize]);
+
+  const handlePageSizeChange = (event) => {
+    const newPageSize = Number(event.target.value);
+
+    setPageSize(newPageSize);
+    setPageNumber(1);
+  };
 
   const handleActivate = async (customer) => {
     const isConfirmed = window.confirm(
@@ -66,6 +76,11 @@ function PassiveCustomersPage() {
       );
     }
   };
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((customersData?.totalCount ?? 0) / pageSize),
+  );
 
   if (loading) {
     return <p>Pasif müşteriler yükleniyor...</p>;
@@ -142,6 +157,56 @@ function PassiveCustomersPage() {
           <p className="customers-total">
             Toplam pasif müşteri: {customersData.totalCount}
           </p>
+
+          <nav
+            className="customers-pagination"
+            aria-label="Pasif müşteri sayfalama"
+          >
+            <label
+              htmlFor="passive-customer-page-size"
+              className="customers-page-size"
+            >
+              <span>Sayfa başına</span>
+
+              <select
+                id="passive-customer-page-size"
+                value={pageSize}
+                onChange={handlePageSizeChange}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+            </label>
+
+            <div className="customers-page-controls">
+              <button
+                type="button"
+                disabled={pageNumber <= 1}
+                onClick={() =>
+                  setPageNumber((currentPage) => Math.max(1, currentPage - 1))
+                }
+              >
+                Önceki
+              </button>
+
+              <span aria-live="polite">
+                Sayfa {pageNumber} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                disabled={pageNumber >= totalPages}
+                onClick={() =>
+                  setPageNumber((currentPage) =>
+                    Math.min(totalPages, currentPage + 1),
+                  )
+                }
+              >
+                Sonraki
+              </button>
+            </div>
+          </nav>
         </div>
       )}
     </main>
