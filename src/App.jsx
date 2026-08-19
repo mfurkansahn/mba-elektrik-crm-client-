@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/auth/LoginPage";
 import UnauthorizedPage from "./pages/auth/UnauthorizedPage";
 
+import NotFoundPage from "./pages/common/NotFoundPage";
+
 import DashboardPage from "./pages/management/dashboard/DashboardPage";
 import CustomerAccountsPage from "./pages/management/customer-accounts/CustomerAccountsPage";
 
@@ -97,6 +99,8 @@ function App() {
           element={<CustomerPortalServiceRequestDetailPage />}
         />
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
