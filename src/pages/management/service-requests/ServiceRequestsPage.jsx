@@ -38,6 +38,13 @@ function ServiceRequestsPage() {
     setPageNumber(1);
   };
 
+  const handlePageSizeChange = (event) => {
+    const newPageSize = Number(event.target.value);
+
+    setPageSize(newPageSize);
+    setPageNumber(1);
+  };
+
   const handleClearFilters = () => {
     setFilters({
       search: "",
@@ -86,15 +93,6 @@ function ServiceRequestsPage() {
   }, [filters, pageNumber, pageSize]);
 
   useEffect(() => {
-    setFilters((previousFilters) => ({
-      ...previousFilters,
-      status: selectedStatus,
-    }));
-
-    setPageNumber(1);
-  }, [selectedStatus]);
-
-  useEffect(() => {
     const fetchReferenceData = async () => {
       try {
         const [serviceTypesResponse, statusesResponse] = await Promise.all([
@@ -111,6 +109,12 @@ function ServiceRequestsPage() {
 
     fetchReferenceData();
   }, []);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil((serviceRequestsData?.totalCount ?? 0) / pageSize),
+  );
+
   if (loading) {
     return <p>Servis talepleri yükleniyor...</p>;
   }
@@ -123,11 +127,11 @@ function ServiceRequestsPage() {
     <main className="service-requests-page">
       <div className="service-requests-header">
         <div>
-          <h1>{selectedStatus || "Servis Talepleri"}</h1>
+          <h1>{filters.status || "Servis Talepleri"}</h1>
 
           <p>
-            {selectedStatus
-              ? `"${selectedStatus}" durumundaki hizmet talepleri`
+            {filters.status
+              ? `"${filters.status}" durumundaki hizmet talepleri`
               : "Kayıtlı servis taleplerinin listesi"}
           </p>
         </div>
@@ -273,8 +277,8 @@ function ServiceRequestsPage() {
 
       {serviceRequestsData.items.length === 0 ? (
         <p>
-          {selectedStatus
-            ? `"${selectedStatus}" durumunda hizmet talebi bulunmuyor.`
+          {filters.status
+            ? `"${filters.status}" durumunda hizmet talebi bulunmuyor.`
             : "Henüz kayıtlı hizmet talebi bulunmuyor."}
         </p>
       ) : (
@@ -339,6 +343,56 @@ function ServiceRequestsPage() {
           <p className="service-requests-total">
             Toplam hizmet talebi: {serviceRequestsData.totalCount}
           </p>
+
+          <nav
+            className="service-requests-pagination"
+            aria-label="Hizmet talepleri sayfalama"
+          >
+            <label
+              htmlFor="service-request-page-size"
+              className="service-requests-page-size"
+            >
+              <span>Sayfa başına</span>
+
+              <select
+                id="service-request-page-size"
+                value={pageSize}
+                onChange={handlePageSizeChange}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+            </label>
+
+            <div className="service-requests-page-controls">
+              <button
+                type="button"
+                disabled={pageNumber <= 1}
+                onClick={() =>
+                  setPageNumber((currentPage) => Math.max(1, currentPage - 1))
+                }
+              >
+                Önceki
+              </button>
+
+              <span aria-live="polite">
+                Sayfa {pageNumber} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                disabled={pageNumber >= totalPages}
+                onClick={() =>
+                  setPageNumber((currentPage) =>
+                    Math.min(totalPages, currentPage + 1),
+                  )
+                }
+              >
+                Sonraki
+              </button>
+            </div>
+          </nav>
         </div>
       )}
     </main>
