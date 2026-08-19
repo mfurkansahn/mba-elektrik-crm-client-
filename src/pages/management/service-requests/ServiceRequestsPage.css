@@ -281,7 +281,7 @@
   outline-offset: 2px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .service-requests-table-wrapper {
     overflow: visible;
     background-color: transparent;
@@ -337,6 +337,13 @@
 
   .service-requests-total {
     margin-top: 16px;
+    background-color: #ffffff;
+    border: 1px solid #d9e2ec;
+    border-radius: 10px;
+  }
+
+  .service-requests-pagination {
+    margin-top: 12px;
     background-color: #ffffff;
     border: 1px solid #d9e2ec;
     border-radius: 10px;
